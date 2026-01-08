@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { updateDecorations } from './decorations';
+import { createVersionsHoverMenu } from './clients/versions/versionHoverMenu';
 
 let activeEditorChangeTimeout: NodeJS.Timeout | undefined;
 
@@ -33,7 +34,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposable, createVersionsHoverMenu());
 }
 
 export function deactivate() {}
