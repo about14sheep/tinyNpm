@@ -1,51 +1,9 @@
 import { Hover, languages, MarkdownString, Range } from "vscode";
+import DependencyWarning from "../warnings/DependencyWarning";
 import { getRepoFromMemory } from "../../cache/memCache";
-
-function cleanRepoUrl(url: string) {
-    if (url.startsWith('git+')) {
-        url = url.substring(4);
-    }
-
-    if (url.startsWith('git://')) {
-        url = url.replace('git://', 'https://');
-    }
-
-    if (url.endsWith('.git')) {
-        url = url.substring(0, url.length - 4);
-    }
-
-    return url;
-}
-
-function createHomepageLink(url: string) {
-    return `[$(home)](${url} "View Homepage") &nbsp;`;
-}
-
-function createRepoLink(url: string) {
-    let repoHost = 'github';
-    let repoText = 'on GitHub';
-    if (!url.includes('github')) {
-        repoHost = 'repo';
-        repoText = 'Repository';
-    }
-    return `[$(${repoHost})](${cleanRepoUrl(url)} "View ${repoText}") &nbsp;`;
-}
-
-function createNpmLink(packageName: string) {
-    return `[npm](https://npmjs.org/package/${packageName} "View on npm") &nbsp;`;
-}
-
-function getDependencyWarningLevel(depCount: number): { icon: string, color: string, message: string} {
-    if (depCount === 0) {
-        return { icon: 'pass', color: 'green', message: 'No dependencies'};
-    } else if (depCount <= 10) {
-        return { icon: 'pass', color: 'green', message: 'Low dependency count'};
-    } else if (depCount <= 50) {
-        return { icon: 'warning', color: 'yellow', message: 'Moderate dependencies'};
-    } else {
-        return { icon: 'error', color: 'red', message: 'High dependency count'};
-    }
-}
+import { createHomepageLink, createRepoLink, createNpmLink } from "./linkCreators";
+import StalenessWarning from "../warnings/StalenessWarning";
+import DownloadsWarning from "../warnings/DownloadsWarning";
 
 export function createPackageDetailsHoverMenu() {
     return languages.registerHoverProvider(
@@ -91,16 +49,29 @@ export function createPackageDetailsHoverMenu() {
             markdown.supportThemeIcons = true;
             markdown.isTrusted = true;
             const cleanVersion = version.replace(/^[\^~]/, '');
+            console.log(cachedPackage.time[cleanVersion], cleanVersion);
             const numberOfDependencies = Object.keys(cachedPackage.versions[cleanVersion].dependencies || {}).length;
-            const depWarning = getDependencyWarningLevel(numberOfDependencies);
+            const depWarning = new DependencyWarning(numberOfDependencies);
+            const staleness = new StalenessWarning(cachedPackage.time[cleanVersion]);
+            const temp_dl = 10000;
+            const dlWarning = new DownloadsWarning(temp_dl);
 
             markdown.appendMarkdown(`**${cachedPackage.name}** &nbsp; &nbsp; &nbsp; ${createRepoLink(cachedPackage.repository.url)}  ${createHomepageLink(cachedPackage.homepage)}  ${createNpmLink(packageName)}\n\n`);
             markdown.appendMarkdown(`---\n\n`);
             markdown.appendMarkdown(cachedPackage.description + '\n\n');
-            markdown.appendMarkdown(`v${cleanVersion} • ${numberOfDependencies} deps $(${depWarning.icon}) • 10000 downloads/week\n\n`);
-            if (depWarning.icon === 'warning' || depWarning.icon === 'error') {
+            markdown.appendMarkdown(`${staleness.icon} v${cleanVersion} • ${depWarning.icon} ${numberOfDependencies} deps • ${dlWarning.icon} ${temp_dl} downloads/week\n\n`);
+            const showTips = depWarning.showWarning() || staleness.showWarning() || dlWarning.showWarning();
+            if (showTips) {
                 markdown.appendMarkdown(`---\n\n`);
-                markdown.appendMarkdown(`$(${depWarning.icon}) *High dependency count increases risks.* [Learn more]()\n\n`);
+                if (depWarning.showWarning()) {
+                    markdown.appendMarkdown(depWarning.getWarning());
+                }
+                if (staleness.showWarning()) {
+                    markdown.appendMarkdown(staleness.getWarning());
+                }
+                if (dlWarning.showWarning()) {
+                    markdown.appendMarkdown(dlWarning.getWarning());
+                }
             }
             
             return new Hover(markdown, hoverRange);
