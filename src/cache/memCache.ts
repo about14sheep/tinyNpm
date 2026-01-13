@@ -29,4 +29,15 @@ export function getDownloadsFromMemory(name: string) {
     if (cached && Date.now() - cached.timestamp < TTL) {
         return cached.data;
     }
+
+    if (cached) {
+        downloadCache.delete(name);
+    }
+}
+
+export function storeDownloadsInMemory(name: string, data: any) {
+    downloadCache.set(name, {
+        data,
+        timestamp: Date.now()
+    });
 }

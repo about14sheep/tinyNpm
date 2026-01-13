@@ -4,7 +4,8 @@ interface HoverDecorationType {
     range: Range,
     packageName: string,
     latest: {
-        version: string
+        version: string,
+        release: string
     },
     safest: {
         version: string,

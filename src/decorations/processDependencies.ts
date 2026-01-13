@@ -3,7 +3,6 @@ import { Range } from "vscode";
 import { getRepoFromMemory } from "../cache/memCache";
 import { getClosestVersionFromDaysAgo } from "../clients/versions/getClosestVersionFromDaysAgo";
 import { decorationRanges } from "./decorationRangeMap";
-import { timeStamp } from "console";
 
 export function processDependencies(document: TextDocument, fileText: string, deps: Record<string, string>, decorations: DecorationOptions[]) {
 	const ranges = [];
@@ -16,6 +15,7 @@ export function processDependencies(document: TextDocument, fileText: string, de
             const metadata = getRepoFromMemory(packageName);
 			const safeVersion = getClosestVersionFromDaysAgo(metadata.time);
             const latestVersion = metadata['dist-tags'].latest;
+			const latestVersionRelease = metadata.time[latestVersion];
 			const range = new Range(pos, pos);
 
 			decorations.push({
@@ -33,6 +33,7 @@ export function processDependencies(document: TextDocument, fileText: string, de
 				packageName,
 				latest: {
 					version: latestVersion,
+					release: latestVersionRelease, 
 				},
 				safest: {
 					version: safeVersion[0],

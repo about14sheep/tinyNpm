@@ -23,7 +23,7 @@ export function createVersionsHoverMenu() {
                     if (decoration.range.contains(position)) {
                         const markdown = new MarkdownString();
                         markdown.appendMarkdown(`**${decoration.packageName}**\n\n`);
-                        markdown.appendMarkdown(`Latest Version: ${decoration.latest.version}\n\n`);
+                        markdown.appendMarkdown(`Latest Version: ${decoration.latest.version} published ${createReleaseDate(decoration.latest.release)}\n\n`);
                         markdown.appendMarkdown(`Safe Version: ${decoration.safest.version} published ${createReleaseDate(decoration.safest.release)}`);
 
                         return new Hover(markdown, decoration.range);

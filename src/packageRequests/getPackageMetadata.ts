@@ -1,4 +1,5 @@
 import { getRepoFromMemory, storeRepoInMemory } from "../cache/memCache";
+import { getDownloads } from "./getDownloads";
 
 export async function getPackageMetadata(packageName: string) {
     try {
@@ -12,6 +13,8 @@ export async function getPackageMetadata(packageName: string) {
            const data = await response.json() as any;
            storeRepoInMemory(packageName, data);
         }
+
+        await getDownloads(packageName);
     } catch (err) {
         console.error(`Error getting metadata for package ${packageName}`);
     }

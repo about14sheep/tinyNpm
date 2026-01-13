@@ -1,9 +1,19 @@
 import { Hover, languages, MarkdownString, Range } from "vscode";
 import DependencyWarning from "../warnings/DependencyWarning";
-import { getRepoFromMemory } from "../../cache/memCache";
+import { getDownloadsFromMemory, getRepoFromMemory } from "../../cache/memCache";
 import { createHomepageLink, createRepoLink, createNpmLink } from "./linkCreators";
 import StalenessWarning from "../warnings/StalenessWarning";
 import DownloadsWarning from "../warnings/DownloadsWarning";
+
+function formatDownloads(downloads: number): string {
+    if (downloads >= 1000000) {
+        return `${(downloads / 1000000).toFixed(1)}M`;
+    } else if (downloads >= 1000) {
+        return `${(downloads / 1000).toFixed(1)}K`;
+    } else {
+        return downloads.toString();
+    }
+}
 
 export function createPackageDetailsHoverMenu() {
     return languages.registerHoverProvider(
@@ -49,17 +59,16 @@ export function createPackageDetailsHoverMenu() {
             markdown.supportThemeIcons = true;
             markdown.isTrusted = true;
             const cleanVersion = version.replace(/^[\^~]/, '');
-            console.log(cachedPackage.time[cleanVersion], cleanVersion);
             const numberOfDependencies = Object.keys(cachedPackage.versions[cleanVersion].dependencies || {}).length;
             const depWarning = new DependencyWarning(numberOfDependencies);
             const staleness = new StalenessWarning(cachedPackage.time[cleanVersion]);
-            const temp_dl = 10000;
+            const temp_dl = getDownloadsFromMemory(packageName);
             const dlWarning = new DownloadsWarning(temp_dl);
 
             markdown.appendMarkdown(`**${cachedPackage.name}** &nbsp; &nbsp; &nbsp; ${createRepoLink(cachedPackage.repository.url)}  ${createHomepageLink(cachedPackage.homepage)}  ${createNpmLink(packageName)}\n\n`);
             markdown.appendMarkdown(`---\n\n`);
             markdown.appendMarkdown(cachedPackage.description + '\n\n');
-            markdown.appendMarkdown(`${staleness.icon} v${cleanVersion} • ${depWarning.icon} ${numberOfDependencies} deps • ${dlWarning.icon} ${temp_dl} downloads/week\n\n`);
+            markdown.appendMarkdown(`${staleness.icon} v${cleanVersion} • ${depWarning.icon} ${numberOfDependencies} deps • ${dlWarning.icon} ${formatDownloads(temp_dl)} weekly\n\n`);
             const showTips = depWarning.showWarning() || staleness.showWarning() || dlWarning.showWarning();
             if (showTips) {
                 markdown.appendMarkdown(`---\n\n`);
