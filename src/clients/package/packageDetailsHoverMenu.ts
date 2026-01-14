@@ -1,9 +1,9 @@
 import { Hover, languages, MarkdownString, Range } from "vscode";
 import DependencyWarning from "../warnings/DependencyWarning";
 import { getDownloadsFromMemory, getRepoFromMemory } from "../../cache/memCache";
-import { createHomepageLink, createRepoLink, createNpmLink } from "./linkCreators";
 import StalenessWarning from "../warnings/StalenessWarning";
 import DownloadsWarning from "../warnings/DownloadsWarning";
+import { createHeader } from "../util/hoverMenuHeader";
 
 function formatDownloads(downloads: number): string {
     if (downloads >= 1000000) {
@@ -64,9 +64,10 @@ export function createPackageDetailsHoverMenu() {
             const staleness = new StalenessWarning(cachedPackage.time[cleanVersion]);
             const temp_dl = getDownloadsFromMemory(packageName);
             const dlWarning = new DownloadsWarning(temp_dl);
+            const repourl = cachedPackage.repository.url;
+            const homepageUrl = cachedPackage.homepage;
 
-            markdown.appendMarkdown(`**${cachedPackage.name}** &nbsp; &nbsp; &nbsp; ${createRepoLink(cachedPackage.repository.url)}  ${createHomepageLink(cachedPackage.homepage)}  ${createNpmLink(packageName)}\n\n`);
-            markdown.appendMarkdown(`---\n\n`);
+            markdown.appendMarkdown(createHeader(repourl, homepageUrl, packageName));
             markdown.appendMarkdown(cachedPackage.description + '\n\n');
             markdown.appendMarkdown(`${staleness.icon} v${cleanVersion} • ${depWarning.icon} ${numberOfDependencies} deps • ${dlWarning.icon} ${formatDownloads(temp_dl)} weekly\n\n`);
             const showTips = depWarning.showWarning() || staleness.showWarning() || dlWarning.showWarning();

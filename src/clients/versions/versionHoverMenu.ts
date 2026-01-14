@@ -1,5 +1,8 @@
 import { Hover, languages, MarkdownString } from "vscode";
 import { decorationRanges } from "../../decorations/decorationRangeMap";
+import { getRepoFromMemory } from "../../cache/memCache";
+import { createHeader } from "../util/hoverMenuHeader";
+import { createUpdateCommand } from "./updateCommand";
 
 function createReleaseDate(timestamp: string) {
     const date = new Date(timestamp);
@@ -8,6 +11,10 @@ function createReleaseDate(timestamp: string) {
         month: "long",
         day: "numeric"
     });
+}
+
+function createUpdateButton(packageName: string, version: string, line: number, key: number) {
+    return `command:tinynpm.updateVersion?${encodeURIComponent(JSON.stringify([packageName, version, line, key]))}`;
 }
 
 export function createVersionsHoverMenu() {
@@ -22,9 +29,14 @@ export function createVersionsHoverMenu() {
                 for (const [line, decoration] of decorationRanges) {
                     if (decoration.range.contains(position)) {
                         const markdown = new MarkdownString();
-                        markdown.appendMarkdown(`**${decoration.packageName}**\n\n`);
-                        markdown.appendMarkdown(`Latest Version: ${decoration.latest.version} published ${createReleaseDate(decoration.latest.release)}\n\n`);
-                        markdown.appendMarkdown(`Safe Version: ${decoration.safest.version} published ${createReleaseDate(decoration.safest.release)}`);
+                        markdown.supportThemeIcons = true;
+                        markdown.isTrusted = true;
+                        const packageData = getRepoFromMemory(decoration.packageName);
+                        const repoUrl = packageData.repository.url;
+                        const homepageUrl = packageData.homepage;
+                        markdown.appendMarkdown(createHeader(repoUrl, homepageUrl, decoration.packageName));
+                        markdown.appendMarkdown(`[Latest Version Update](${createUpdateButton(decoration.packageName, decoration.latest.version, position.line, line)}): ${decoration.latest.version} published ${createReleaseDate(decoration.latest.release)}\n\n`);
+                        markdown.appendMarkdown(`[Safe Version Update](${createUpdateButton(decoration.packageName, decoration.safest.version, position.line, line)}): ${decoration.safest.version} published ${createReleaseDate(decoration.safest.release)}`);
 
                         return new Hover(markdown, decoration.range);
                     }

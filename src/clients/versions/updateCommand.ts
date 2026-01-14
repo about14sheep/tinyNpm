@@ -1,0 +1,39 @@
+import { commands, Position, Range, window } from "vscode";
+import { decorationRanges } from "../../decorations/decorationRangeMap";
+import { updateDecorations } from "../../decorations";
+import { decorationType } from "../../extension";
+
+export function createUpdateCommand() {
+    return commands.registerCommand(
+        'tinynpm.updateVersion',
+        async (packageName: string, newVersion: string, line: number, key: number) => {
+            const editor = window.activeTextEditor;
+            if (!editor || !editor.document.fileName.endsWith('package.json')) {
+                window.showErrorMessage('Please open package.json');
+                return;
+            }
+
+            const document = editor.document;
+            const lineText = document.lineAt(line).text;
+            const versionMatch = lineText.match(/"([^"]+)"\s*:\s*"([^"]+)"/); 
+            if (!versionMatch) {
+                window.showErrorMessage('Could not find version to update');
+                return;
+            }
+
+            const [, pkg, oldVersion] = versionMatch;
+
+            const startIndex = lineText.indexOf(oldVersion);
+            const range = new Range(
+                new Position(line, startIndex),
+                new Position(line, startIndex + oldVersion.length)
+            );
+
+            await editor.edit(editBuilder => {
+                editBuilder.replace(range, newVersion);
+            });
+
+            window.showInformationMessage(`Updated ${packageName} to ${newVersion}`);
+        }
+    );
+}

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { updateDecorations } from './decorations';
 import { createVersionsHoverMenu } from './clients/versions/versionHoverMenu';
 import { createPackageDetailsHoverMenu } from './clients/package/packageDetailsHoverMenu';
+import { createUpdateCommand } from './clients/versions/updateCommand';
 
 let activeEditorChangeTimeout: NodeJS.Timeout | undefined;
 
@@ -18,14 +19,15 @@ async function activeFileHandler(editor: vscode.TextEditor | undefined, decorati
 	}, 100);
 }
 
+export const decorationType = vscode.window.createTextEditorDecorationType({
+	after: {
+		margin: '0 0 0 1em',
+		color: new vscode.ThemeColor('editorCodeLens.foreground')
+	}
+});
+
 export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "tinynpm" is now active!');
-	const decorationType = vscode.window.createTextEditorDecorationType({
-		after: {
-			margin: '0 0 0 1em',
-			color: new vscode.ThemeColor('editorCodeLens.foreground')
-		}
-	});
 
 	const editor = vscode.window.activeTextEditor;
 	await activeFileHandler(editor, decorationType);
@@ -35,7 +37,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 
 
-	context.subscriptions.push(disposable, createVersionsHoverMenu(), createPackageDetailsHoverMenu());
+	context.subscriptions.push(disposable, createVersionsHoverMenu(), createPackageDetailsHoverMenu(), createUpdateCommand());
 }
 
 export function deactivate() {}
