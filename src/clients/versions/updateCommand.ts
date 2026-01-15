@@ -33,6 +33,15 @@ export function createUpdateCommand() {
                 editBuilder.replace(range, newVersion);
             });
 
+            await updateDecorations(editor, decorationType);
+            await commands.executeCommand('closeParameterHints');
+            await commands.executeCommand('closeMarkersNavigation');
+      
+            await window.showTextDocument(editor.document, {
+                viewColumn: editor.viewColumn,
+                preserveFocus: false
+            });
+
             window.showInformationMessage(`Updated ${packageName} to ${newVersion}`);
         }
     );

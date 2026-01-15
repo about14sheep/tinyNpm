@@ -43,7 +43,7 @@ export function createPackageDetailsHoverMenu() {
             }
 
             const startChar = lineText.indexOf('"' + packageName);
-            const endChar = lineText.indexOf(version) + version.length;
+            const endChar = lineText.indexOf(version) - 2;
             const hoverRange = new Range(
                 position.line,
                 startChar,

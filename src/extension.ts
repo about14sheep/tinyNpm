@@ -36,8 +36,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		await activeFileHandler(editor, decorationType);
 	});
 
+	const watcher = vscode.workspace.createFileSystemWatcher('**/package.json');
+	watcher.onDidChange(async uri => {
+		console.log("it changed!");
+		await activeFileHandler(editor, decorationType);
+	});
 
-	context.subscriptions.push(disposable, createVersionsHoverMenu(), createPackageDetailsHoverMenu(), createUpdateCommand());
+	context.subscriptions.push(watcher, disposable, createVersionsHoverMenu(), createPackageDetailsHoverMenu(), createUpdateCommand());
 }
 
 export function deactivate() {}

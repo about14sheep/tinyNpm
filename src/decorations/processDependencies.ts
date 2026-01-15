@@ -5,8 +5,8 @@ import { getClosestVersionFromDaysAgo } from "../clients/versions/getClosestVers
 import { decorationRanges } from "./decorationRangeMap";
 
 export function processDependencies(document: TextDocument, fileText: string, deps: Record<string, string>, decorations: DecorationOptions[]) {
-	const ranges = [];
 	for (const [packageName, version] of Object.entries(deps)) {
+        const cleanVersion = version.replace(/^[\^~]/, '');
 		const regrex = new RegExp(`"${escapeRegex(packageName)}"\\s*:\\s*"${escapeRegex(version)}"`, 'g');
 		const match = regrex.exec(fileText);
 
@@ -16,20 +16,30 @@ export function processDependencies(document: TextDocument, fileText: string, de
 			const safeVersion = getClosestVersionFromDaysAgo(metadata.time);
             const latestVersion = metadata['dist-tags'].latest;
 			const latestVersionRelease = metadata.time[latestVersion];
+			const currentVersionRelease = metadata.time[cleanVersion];
 			const range = new Range(pos, pos);
+			const currentDate = new Date(currentVersionRelease);
+			const safeVersionDate = new Date(safeVersion[1]);
+			const hideDeco = currentDate >= safeVersionDate || currentDate >= new Date(latestVersionRelease);
 
-			decorations.push({
-				range,
-				renderOptions: {
-					after: {
-						contentText: safeVersion[0],
-						color: 'orange',
+			if (!hideDeco) {
+				decorations.push({
+					range,
+					renderOptions: {
+						after: {
+							contentText: safeVersion[0],
+							color: 'orange',
+						}
 					}
-				}
-			});
+				});
+			}
+
+			const versionStartIndex = match.index + match[0].indexOf(`"${version}"`);
+			const versionStartPos = document.positionAt(versionStartIndex);
+			const hoverRange = new Range(versionStartPos, pos);
 
 			decorationRanges.set(match.index, {
-				range,
+				range: hoverRange,
 				packageName,
 				latest: {
 					version: latestVersion,
