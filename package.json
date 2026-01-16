@@ -14,12 +14,16 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "tinynpm.helloWorld",
-        "title": "Hello World"
+    "configuration": {
+      "title": "tinynpm user configuration",
+      "properties": {
+        "tinynpm.versionBufferPeriod": {
+          "type": "number",
+          "default": 3,
+          "description": "Minimum age in days for package versions (helps avoid newly published malicious packages)"
+        }
       }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

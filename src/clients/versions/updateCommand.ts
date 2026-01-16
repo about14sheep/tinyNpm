@@ -1,5 +1,4 @@
 import { commands, Position, Range, window } from "vscode";
-import { decorationRanges } from "../../decorations/decorationRangeMap";
 import { updateDecorations } from "../../decorations";
 import { decorationType } from "../../extension";
 

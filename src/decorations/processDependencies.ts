@@ -1,5 +1,5 @@
 import type { TextDocument, DecorationOptions } from "vscode";
-import { Range } from "vscode";
+import { Range, workspace } from "vscode";
 import { getRepoFromMemory } from "../cache/memCache";
 import { getClosestVersionFromDaysAgo } from "../clients/versions/getClosestVersionFromDaysAgo";
 import { decorationRanges } from "./decorationRangeMap";
@@ -13,7 +13,9 @@ export function processDependencies(document: TextDocument, fileText: string, de
 		if (match) {
 			const pos = document.positionAt(match.index + match[0].length);
             const metadata = getRepoFromMemory(packageName);
-			const safeVersion = getClosestVersionFromDaysAgo(metadata.time);
+			const config = workspace.getConfiguration('tinynpm');
+			const bufferPeriod = config.get<number>('versionBufferPeried', 3);
+			const safeVersion = getClosestVersionFromDaysAgo(metadata.time, bufferPeriod);
             const latestVersion = metadata['dist-tags'].latest;
 			const latestVersionRelease = metadata.time[latestVersion];
 			const currentVersionRelease = metadata.time[cleanVersion];
