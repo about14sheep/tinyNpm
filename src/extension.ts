@@ -3,6 +3,7 @@ import { updateDecorations } from './decorations';
 import { createVersionsHoverMenu } from './clients/versions/versionHoverMenu';
 import { createPackageDetailsHoverMenu } from './clients/package/packageDetailsHoverMenu';
 import { createUpdateCommand } from './clients/versions/updateCommand';
+import { getNpmRc } from './clients/util/readnpmfile';
 
 let activeEditorChangeTimeout: NodeJS.Timeout | undefined;
 
@@ -28,6 +29,13 @@ export const decorationType = vscode.window.createTextEditorDecorationType({
 
 export async function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "tinynpm" is now active!');
+	const workspaceFolders = vscode.workspace.workspaceFolders;
+	if (workspaceFolders) {
+		for (const folder of workspaceFolders) {
+			const workspaceRoot = folder.uri.fsPath;
+			await getNpmRc(workspaceRoot);
+		}
+	}
 
 	const editor = vscode.window.activeTextEditor;
 	await activeFileHandler(editor, decorationType);
