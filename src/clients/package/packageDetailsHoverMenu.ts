@@ -5,16 +5,6 @@ import StalenessWarning from "../warnings/StalenessWarning";
 import DownloadsWarning from "../warnings/DownloadsWarning";
 import { createHeader } from "../util/hoverMenuHeader";
 
-function formatDownloads(downloads: number): string {
-    if (downloads >= 1000000) {
-        return `${(downloads / 1000000).toFixed(1)}M`;
-    } else if (downloads >= 1000) {
-        return `${(downloads / 1000).toFixed(1)}K`;
-    } else {
-        return downloads.toString();
-    }
-}
-
 export function createPackageDetailsHoverMenu() {
     return languages.registerHoverProvider(
        { scheme: 'file', language: 'json', pattern: '**/package.json'},
@@ -62,14 +52,14 @@ export function createPackageDetailsHoverMenu() {
             const numberOfDependencies = Object.keys(cachedPackage.versions[cleanVersion].dependencies || {}).length;
             const depWarning = new DependencyWarning(numberOfDependencies);
             const staleness = new StalenessWarning(cachedPackage.time[cleanVersion]);
-            const temp_dl = getDownloadsFromMemory(packageName);
+            const temp_dl = getDownloadsFromMemory(packageName) || -1;
             const dlWarning = new DownloadsWarning(temp_dl);
             const repourl = cachedPackage.repository.url;
             const homepageUrl = cachedPackage.homepage;
 
             markdown.appendMarkdown(createHeader(repourl, homepageUrl, packageName));
             markdown.appendMarkdown(cachedPackage.description + '\n\n');
-            markdown.appendMarkdown(`${staleness.icon} v${cleanVersion} • ${depWarning.icon} ${numberOfDependencies} deps • ${dlWarning.icon} ${formatDownloads(temp_dl)} weekly\n\n`);
+            markdown.appendMarkdown(`${staleness.icon} v${cleanVersion} • ${depWarning.icon} ${numberOfDependencies} deps ${dlWarning.getDownloads()}\n\n`);
             const showTips = depWarning.showWarning() || staleness.showWarning() || dlWarning.showWarning();
             if (showTips) {
                 markdown.appendMarkdown(`---\n\n`);

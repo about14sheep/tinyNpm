@@ -16,3 +16,16 @@ export function getAuthTokenForRegistry(registry: string, config: NpmRC): string
     const registryHost = new URL(registry).host;
     return config.merged[`//${registryHost}/:_authToken`];
 }
+
+export function isNpmRegistry(url: string): boolean {
+    const normalized = url.replace(/\/+$/, '');
+  
+    const npmRegistries = [
+        'https://registry.npmjs.org',
+        'https://registry.npmjs.com',
+        'http://registry.npmjs.org',
+        'http://registry.npmjs.com'
+    ];
+  
+    return npmRegistries.includes(normalized);
+}
