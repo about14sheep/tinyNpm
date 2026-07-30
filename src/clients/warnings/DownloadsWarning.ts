@@ -59,7 +59,7 @@ export default class DownloadsWarning {
         if (!this.totalDownloads || this.totalDownloads < 0) {
             return "";
         }
-        return `${this.icon} *Limited adoption means less community security review* [Learn more](${this.detailsLink})`;
+        return `${this.icon} *Limited adoption means less community security review*`;
     }
 
     public getDownloads() {

@@ -44,6 +44,6 @@ export default class DependencyWarning {
     }
 
     public getWarning() {
-        return `${this.icon} *High dependency count increases risks.* [Learn more](${this.detailsLink})\n\n`;
+        return `${this.icon} *High dependency count increases risks.*\n\n`;
     }
 }

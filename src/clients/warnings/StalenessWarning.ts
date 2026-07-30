@@ -52,6 +52,6 @@ export default class StalenessWarning {
     }
 
     public getWarning() {
-        return `${this.icon} *Outdated packages may lack recent security fixes* [Learn more](${this.detailsLink})\n\n`;
+        return `${this.icon} *Outdated packages may lack recent security fixes*\n\n`;
     }
 }
