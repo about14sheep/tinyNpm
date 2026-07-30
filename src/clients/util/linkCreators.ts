@@ -31,3 +31,7 @@ export function createRepoLink(url: string) {
 export function createNpmLink(packageName: string) {
     return `[npm](https://npmjs.org/package/${packageName} "View on npm") &nbsp;`;
 }
+
+export function createSocketLink(packageName: string) {
+    return `[$(shield)](https://socket.dev/npm/package/${packageName} "View on Socket.dev") &nbsp;`;
+}

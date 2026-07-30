@@ -40,8 +40,6 @@ export function createUpdateCommand() {
                 viewColumn: editor.viewColumn,
                 preserveFocus: false
             });
-
-            window.showInformationMessage(`Updated ${packageName} to ${newVersion}`);
         }
     );
 }
