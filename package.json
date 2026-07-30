@@ -56,7 +56,9 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "vsix:package": "vsce package",
+    "vsix:publish": "vsce publish"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -65,6 +67,7 @@
     "@types/vscode": "^1.107.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.9.2",
     "esbuild": "^0.27.1",
     "eslint": "^9.39.1",
     "npm-run-all": "^4.1.5",

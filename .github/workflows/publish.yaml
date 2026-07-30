@@ -34,10 +34,10 @@ jobs:
         run: npm ci
 
       - name: Package extension
-        run: npx vsce package
+        run: npm run vsix:package
 
       - name: Publish to VS Code Marketplace
-        run: npx vsce publish -p ${{ secrets.VSCE_PAT }}
+        run: npm run vsix:publish -- -p ${{ secrets.VSCE_PAT }}
 
       - name: Attach .vsix to the release
         env:
