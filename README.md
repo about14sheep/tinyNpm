@@ -4,7 +4,7 @@
 
 No telemetry, no external dependencies beyond `semver`, no accounts required.
 
-![tinyNpm hover demo](images/demo.gif)
+![tinyNpm hover demo](images/demosm.gif)
 
 ## Features
 
