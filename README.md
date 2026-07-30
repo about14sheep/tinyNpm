@@ -25,7 +25,7 @@ Hovering over a dependency name shows:
 - 🆕/⏰/💀 **staleness** — flags versions that haven't been updated in a while (180+ days gets a warning, 2+ years gets flagged)
 - 🔥/📉/🦙 **weekly download count** — flags packages with low adoption, since less-used packages get less community security scrutiny
 - Quick links to the package's repository and homepage
-- Quick link to the package's socker.dev page for more security analysis
+- Quick link to the package's socket.dev page for more security analysis
 
 ### Private registry support
 
