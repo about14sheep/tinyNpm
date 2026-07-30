@@ -3,10 +3,29 @@
   "displayName": "tinyNpm",
   "description": "Security focused npm package.json companion",
   "version": "0.0.1",
+  "publisher": "about14sheep",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/about14sheep/tinyNpm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/about14sheep/tinyNpm/issues"
+  },
+  "homepage": "https://github.com/about14sheep/tinyNpm#readme",
+  "keywords": [
+    "npm",
+    "package.json",
+    "security",
+    "dependencies",
+    "supply chain"
+  ],
   "engines": {
     "vscode": "^1.107.0"
   },
   "categories": [
+    "Linters",
     "Other"
   ],
   "activationEvents": [

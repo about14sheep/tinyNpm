@@ -1,71 +1,55 @@
-# tinynpm README
+# tinyNpm
 
-This is the README for your extension "tinynpm". After writing up a brief description, we recommend including the following sections.
+**Security-focused hover insights for `package.json`.** tinyNpm surfaces the npm registry data you'd normally have to look up yourself — staleness, dependency counts, weekly downloads, and safer update targets — right where you're already looking.
+
+No telemetry, no external dependencies beyond `semver`, no accounts required.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Inline version info + one-click updates
 
-For example if there is an image subfolder under your extension project workspace:
+Hovering over a dependency's version in `package.json` shows the latest published version alongside a **buffered** version — the newest release that's been out for at least a configurable number of days. Newly published versions are a common vector for supply-chain attacks (a compromised maintainer account can publish a malicious version that gets pulled by anyone who updates immediately), so the buffered suggestion gives you a safer default.
 
-\!\[feature X\]\(images/feature-x.png\)
+From the hover you can:
+- Update to the buffered (safer) version with one click
+- Update to the absolute latest version with one click
+- Jump straight to the `tinynpm.versionBufferPeriod` setting to adjust the buffer window
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Package details on hover
+
+Hovering over a dependency name shows:
+- The package description, pulled from the registry
+- ✅/⚠️/❌ **dependency count** — flags packages with a large transitive dependency tree (more dependencies = more surface area)
+- 🆕/⏰/💀 **staleness** — flags versions that haven't been updated in a while (180+ days gets a warning, 2+ years gets flagged)
+- 🔥/📉/🦙 **weekly download count** — flags packages with low adoption, since less-used packages get less community security scrutiny
+- Quick links to the package's repository and homepage
+
+### Private registry support
+
+tinyNpm reads your project's `.npmrc` so scoped packages pointed at a private registry are resolved correctly instead of erroring out or silently falling back to the public registry.
+
+### Zero external runtime dependencies
+
+Aside from `semver` for version comparisons, tinyNpm doesn't pull in any third-party packages — smaller install footprint, smaller attack surface, faster startup.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+None — tinyNpm activates automatically and works with any project that has a `package.json`.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension contributes the following setting:
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- `tinynpm.versionBufferPeriod`: Minimum age, in days, before a published version is considered "safe" and used as the buffered update suggestion. Default: `3`.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+None currently tracked. If you run into a bug, please [open an issue](https://github.com/about14sheep/tinyNpm/issues).
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+See [CHANGELOG.md](./CHANGELOG.md) for a full history.
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**Contributions and issues welcome** — see the [GitHub repository](https://github.com/about14sheep/tinyNpm).

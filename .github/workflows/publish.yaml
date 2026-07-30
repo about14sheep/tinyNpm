@@ -1,0 +1,45 @@
+name: Publish Extension
+
+# Triggers whenever you publish a GitHub Release (draft releases do NOT trigger this).
+# The version in package.json should already match the release's tag before you
+# publish the release — this workflow does not bump versions for you.
+#
+# One-time setup required before this will work:
+#   1. Create an Azure DevOps organization + Personal Access Token
+#      (Marketplace scope, "All accessible organizations").
+#   2. Create a publisher matching package.json's "publisher" field:
+#      npx vsce create-publisher <publisher-id>
+#   3. Add the PAT as a repo secret named VSCE_PAT:
+#      Settings -> Secrets and variables -> Actions -> New repository secret
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package extension
+        run: npx vsce package
+
+      - name: Publish to VS Code Marketplace
+        run: npx vsce publish -p ${{ secrets.VSCE_PAT }}
+
+      - name: Attach .vsix to the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" *.vsix --clobber
