@@ -1,8 +1,10 @@
 # tinyNpm
 
-**Security-focused hover insights for `package.json`.** tinyNpm surfaces the npm registry data you'd normally have to look up yourself — staleness, dependency counts, weekly downloads, and safer update targets — right where you're already looking.
+**Security-focused hover insights for `package.json`.** tinyNpm surfaces the npm registry data you'd normally have to look up yourself right where you're already looking.
 
 No telemetry, no external dependencies beyond `semver`, no accounts required.
+
+![tinyNpm hover demo](images/demo.gif)
 
 ## Features
 
