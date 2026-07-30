@@ -15,3 +15,7 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 
 - Now shows a link (as a shield) to the socket.dev page for a package
 - Removes an annoying popup everytime you updated a packages version
+
+## [0.1.3] - Reduce size of demo gif
+
+- Reduced the size of the demo gif as it inflated the package size
