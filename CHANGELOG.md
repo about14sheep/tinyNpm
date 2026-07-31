@@ -23,3 +23,7 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 ## [0.1.4] - Better documentation
 
 - README didnt really describe the project well so i updated it
+
+## [0.1.5] - Add License
+
+- We need a license to publish to open-vsx

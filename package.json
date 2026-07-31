@@ -2,7 +2,7 @@
   "name": "tinynpm",
   "displayName": "tinyNpm",
   "description": "Security focused npm package.json companion",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publisher": "about14sheep",
   "license": "MIT",
   "icon": "images/icon.png",
