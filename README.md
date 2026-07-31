@@ -1,12 +1,21 @@
 # tinyNpm
 
-**Security-focused hover insights for `package.json`.** tinyNpm surfaces the npm registry data you'd normally have to look up yourself right where you're already looking.
+**Security-focused package.json version keeper VS Code extension**
+tinyNpm helps prevent your application from being impacted by supply chain attacks. Most package.json version keepers just show the absolute latest version of a package, tinyNpm allows a configurable buffer period greatly decreasing the chances of download malicious versions.
 
-No telemetry, no external dependencies beyond `semver`, no accounts required.
+It does this and so much more!
 
 ![tinyNpm hover demo](images/demosm.gif)
 
 ## Features
+
+### Package version buffer period
+
+Most supply chain attacks are actually resolved very quickly by npm. However since so many devs update their packages as soon as a new version is available its hard to completely prevent malicious versions from spreading.
+
+tinyNpm allows you to avoid all that by giving a buffer period (in days) before showing you the newest version.
+
+It also removes modifiers from the version (i.e. `^`) so you know exactly what version you are using.
 
 ### Inline version info + one-click updates
 
