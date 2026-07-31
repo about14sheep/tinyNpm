@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { updateDecorations } from './decorations';
 import { createVersionsHoverMenu } from './clients/versions/versionHoverMenu';
-import { createPackageDetailsHoverMenu } from './clients/package/packageDetailsHoverMenu';
 import { createUpdateCommand } from './clients/versions/updateCommand';
 import { getNpmRc } from './clients/util/readnpmfile';
 
@@ -49,7 +48,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		await activeFileHandler(editor, decorationType);
 	});
 
-	context.subscriptions.push(watcher, disposable, createVersionsHoverMenu(), createPackageDetailsHoverMenu(), createUpdateCommand());
+	context.subscriptions.push(watcher, disposable, createVersionsHoverMenu(), createUpdateCommand());
 }
 
 export function deactivate() {}
