@@ -2,7 +2,6 @@ import { WarningLevel } from "./types";
 
 export default class DownloadsWarning {
     private totalDownloads: number;
-    private detailsLink: string = "";
     private warningLevel: WarningLevel;
     private passingCount: number = 10000;
     private warningCount: number = 500;

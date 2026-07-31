@@ -1,6 +1,6 @@
 import { Range } from "vscode";
 
-interface HoverDecorationType {
+export interface HoverDecorationType {
   range: Range;
   packageName: string;
   depCount: number;

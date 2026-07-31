@@ -39,3 +39,9 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 ## [0.2.2] - Better error handling
 
 - Gracefully handle errors and log to output channel
+
+## [0.2.3] - More better error handling
+
+- Fixed a bug where if one package failed to destruct metadata it would crash the extension.
+- More error logging/robust handling
+- More edge case fixes

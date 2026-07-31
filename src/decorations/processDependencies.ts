@@ -6,6 +6,15 @@ import { decorationRanges } from "./decorationRangeMap";
 import { outputChannel } from "../extension";
 import { getErrorMessage } from "../clients/util/getErrorMessage";
 
+function getNumberOfDependencies(metadata: any, version: string): number {
+  if (metadata.versions && metadata.versions[version] && metadata.versions[version].dependencies) {
+    return Object.keys(metadata.versions[version].dependencies).length;
+  }
+
+  outputChannel.appendLine(`No dependencies found for version ${version} in metadata. This is probably an error.`);
+  return 0;
+}
+
 export function processDependencies(
   document: TextDocument,
   fileText: string,
@@ -25,12 +34,10 @@ export function processDependencies(
         const verPos = document.positionAt(match.index + match[0].length);
         const pos = document.lineAt(verPos.line).range.end;
         const metadata = getRepoFromMemory(packageName);
-        const numberOfDependencies = Object.keys(
-          metadata.versions[cleanVersion].dependencies || {},
-        ).length;
+        const numberOfDependencies = getNumberOfDependencies(metadata, cleanVersion);
         const downloadCount = getDownloadsFromMemory(packageName) || -1;
         const config = workspace.getConfiguration("tinynpm");
-        const bufferPeriod = config.get<number>("versionBufferPeried", 3);
+        const bufferPeriod = config.get<number>("versionBufferPeriod", 3);
         const safeVersion = getClosestVersionFromDaysAgo(
           metadata.time,
           bufferPeriod,

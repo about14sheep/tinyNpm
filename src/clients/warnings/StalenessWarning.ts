@@ -1,7 +1,6 @@
 import { WarningLevel } from "./types";
 
 export default class StalenessWarning {
-    private detailsLink: string = "";
     private release: Date;
     private daysSince: number;
     private warningLevel: WarningLevel;

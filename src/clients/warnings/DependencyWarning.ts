@@ -1,7 +1,6 @@
 import { WarningLevel } from "./types";
 
 export default class DependencyWarning {
-    private detailsLink: string = "";
     private warningLevel: WarningLevel;
     private passingCount: number = 10;
     private warningCount: number = 50;

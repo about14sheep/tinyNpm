@@ -25,7 +25,7 @@ export function createVersionsHoverMenu() {
                 for (const [line, decoration] of decorationRanges) {
                     if (decoration.range.contains(position)) {
                         try {
-                            const markdown = createPackageDetailsMarkdown(decoration.packageName, decoration.currentVersion);
+                            const markdown = createPackageDetailsMarkdown(decoration);
                             const config = workspace.getConfiguration('tinynpm');
                             const bufferPeriod = config.get<number>('versionBufferPeriod', 3);
                             const latestUpdateButton = createUpdateButton(decoration.packageName, decoration.latest.version, position.line, line);
