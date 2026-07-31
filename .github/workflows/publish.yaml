@@ -42,6 +42,9 @@ jobs:
       - name: Publish to VS Code Marketplace
         run: npm run vsix:publish -- -p ${{ secrets.VSCE_PAT }}
 
+      - name: Publish to Open VSX
+        run: npx ovsx publish *.vsix -p ${{ secrets.OVSX_PAT }}
+
       - name: Attach .vsix to the release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

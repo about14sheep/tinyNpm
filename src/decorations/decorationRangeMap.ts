@@ -3,6 +3,10 @@ import { Range } from "vscode";
 interface HoverDecorationType {
     range: Range,
     packageName: string,
+    depCount: number,
+    downloads: number,
+    currentVersion: string,
+    age: number,
     latest: {
         version: string,
         release: string

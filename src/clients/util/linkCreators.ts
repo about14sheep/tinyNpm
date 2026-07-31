@@ -33,5 +33,5 @@ export function createNpmLink(packageName: string) {
 }
 
 export function createSocketLink(packageName: string) {
-    return `[$(shield)](https://socket.dev/npm/package/${packageName} "View on Socket.dev") &nbsp;`;
+    return `[$(shield)](https://socket.dev/npm/package/${packageName} "View on socket.dev") &nbsp;`;
 }

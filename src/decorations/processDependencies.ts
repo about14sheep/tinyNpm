@@ -1,6 +1,6 @@
 import type { TextDocument, DecorationOptions } from "vscode";
 import { Range, workspace } from "vscode";
-import { getRepoFromMemory } from "../cache/memCache";
+import { getDownloadsFromMemory, getRepoFromMemory } from "../cache/memCache";
 import { getClosestVersionFromDaysAgo } from "../clients/versions/getClosestVersionFromDaysAgo";
 import { decorationRanges } from "./decorationRangeMap";
 
@@ -11,8 +11,11 @@ export function processDependencies(document: TextDocument, fileText: string, de
 		const match = regrex.exec(fileText);
 
 		if (match) {
-			const pos = document.positionAt(match.index + match[0].length);
+			const verPos = document.positionAt(match.index + match[0].length);
+			const pos = document.lineAt(verPos.line).range.end;
             const metadata = getRepoFromMemory(packageName);
+			const numberOfDependencies = Object.keys(metadata.versions[cleanVersion].dependencies || {}).length;
+			const downloadCount = getDownloadsFromMemory(packageName) || -1;
 			const config = workspace.getConfiguration('tinynpm');
 			const bufferPeriod = config.get<number>('versionBufferPeried', 3);
 			const safeVersion = getClosestVersionFromDaysAgo(metadata.time, bufferPeriod);
@@ -23,7 +26,7 @@ export function processDependencies(document: TextDocument, fileText: string, de
 			const currentDate = new Date(currentVersionRelease);
 			const safeVersionDate = new Date(safeVersion[1]);
 			const hideDeco = currentDate >= safeVersionDate || currentDate >= new Date(latestVersionRelease);
-
+			
 			if (!hideDeco) {
 				decorations.push({
 					range,
@@ -36,13 +39,13 @@ export function processDependencies(document: TextDocument, fileText: string, de
 				});
 			}
 
-			const versionStartIndex = match.index + match[0].indexOf(`"${version}"`);
-			const versionStartPos = document.positionAt(versionStartIndex);
-			const hoverRange = new Range(versionStartPos, pos);
-
 			decorationRanges.set(match.index, {
-				range: hoverRange,
+				range,
 				packageName,
+				depCount: numberOfDependencies,
+				downloads: downloadCount,
+				currentVersion: cleanVersion,
+				age: currentVersionRelease, 
 				latest: {
 					version: latestVersion,
 					release: latestVersionRelease, 

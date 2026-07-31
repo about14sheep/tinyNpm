@@ -2,7 +2,7 @@ export function getTimeAgo(publishDate: string): string {
     const published = new Date(publishDate);
     const now = new Date();
     const diffMs = now.getTime() - published.getTime();
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) {return 'published today';}
     if (diffDays === 1) {return 'published 1 day ago';}

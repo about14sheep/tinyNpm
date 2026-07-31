@@ -27,3 +27,11 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 ## [0.1.5] - Add License
 
 - We need a license to publish to open-vsx
+
+## [0.2.0] - UI Overhaul
+
+- The old UI clashed with the built in npm extension supplied by VS Code. A core feature of this project is that it shouldn't clash with any other extensions (except other package.json version keepers). So 0.2.0 comes with a complete overhaul of the hover menu and what triggers it to show up.
+- Now the security analysis and version change hover menu have been combined. The new menu will only showup when you hover over the version colored decorator.
+- Improvemts to the hover menu ui to make it more fluid and less like a wall of text.
+- Various performance improvements
+- We now publish to open-vsx as well as the vs code extension store!

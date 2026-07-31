@@ -5,7 +5,7 @@ tinyNpm helps prevent your application from being impacted by supply chain attac
 
 It does this and so much more!
 
-![tinyNpm hover demo](images/demosm.gif)
+![tinyNpm hover demo](images/demo.gif)
 
 ## Features
 
@@ -26,10 +26,11 @@ From the hover you can:
 - Update to the absolute latest version with one click
 - Jump straight to the `tinynpm.versionBufferPeriod` setting to adjust the buffer window
 
+Hovering over the update buttons shows the version and its publish date
+
 ### Package details on hover
 
-Hovering over a dependency name shows:
-- The package description, pulled from the registry
+As well as versioning we show a security breakdown of the package in the hover menu:
 - ✅/⚠️/❌ **dependency count** — flags packages with a large transitive dependency tree (more dependencies = more surface area)
 - 🆕/⏰/💀 **staleness** — flags versions that haven't been updated in a while (180+ days gets a warning, 2+ years gets flagged)
 - 🔥/📉/🦙 **weekly download count** — flags packages with low adoption, since less-used packages get less community security scrutiny

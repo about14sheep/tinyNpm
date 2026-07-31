@@ -1,6 +1,7 @@
 import { workspace, type DecorationOptions, type TextEditor, type TextEditorDecorationType } from "vscode";
 import { processDependencies } from "./processDependencies.js";
 import { fetchPackages } from "../packageRequests/fetchPackages.js";
+import { decorationRanges } from "./decorationRangeMap.js";
 
 export async function updateDecorations(editor: TextEditor, decorationType: TextEditorDecorationType) {
 	const document = editor.document;
@@ -9,7 +10,8 @@ export async function updateDecorations(editor: TextEditor, decorationType: Text
 		editor.setDecorations(decorationType, []);
 		return;
 	}
-
+	
+	decorationRanges.clear();
 	const text = document.getText();
 	const workspaceFolder = workspace.getWorkspaceFolder(document.uri);
 	const workspaceRoot = workspaceFolder?.uri.fsPath;
