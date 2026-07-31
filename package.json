@@ -2,7 +2,7 @@
   "name": "tinynpm",
   "displayName": "tinyNpm",
   "description": "Security focused npm package.json companion",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "about14sheep",
   "license": "MIT",
   "icon": "images/icon.png",
@@ -56,25 +56,26 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
+    "pretty": "prettier --write src/**/*.ts",
     "test": "vscode-test",
     "vsix:package": "vsce package",
     "vsix:publish": "vsce publish"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "@types/semver": "^7.7.1",
     "@types/vscode": "^1.107.0",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "3.1.0",
     "@vscode/vsce": "^3.9.2",
-    "esbuild": "^0.27.1",
-    "eslint": "^9.39.1",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.8.0",
     "npm-run-all": "^4.1.5",
+    "prettier": "^3.9.6",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1"
+    "typescript-eslint": "^8.65.0"
   },
   "dependencies": {
-    "semver": "^7.7.3"
+    "semver": "7.8.5"
   }
 }

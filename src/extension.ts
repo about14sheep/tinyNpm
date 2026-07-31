@@ -5,6 +5,7 @@ import { createUpdateCommand } from './clients/versions/updateCommand';
 import { getNpmRc } from './clients/util/readnpmfile';
 
 let activeEditorChangeTimeout: NodeJS.Timeout | undefined;
+export let outputChannel: vscode.OutputChannel;
 
 async function activeFileHandler(editor: vscode.TextEditor | undefined, decorationType: vscode.TextEditorDecorationType) {
 	if (activeEditorChangeTimeout) {
@@ -27,7 +28,11 @@ export const decorationType = vscode.window.createTextEditorDecorationType({
 });
 
 export async function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "tinynpm" is now active!');
+	outputChannel = vscode.window.createOutputChannel('tinyNpm');
+	context.subscriptions.push(outputChannel);
+
+	outputChannel.appendLine("tinyNpm activated");
+
 	const workspaceFolders = vscode.workspace.workspaceFolders;
 	if (workspaceFolders) {
 		for (const folder of workspaceFolders) {
