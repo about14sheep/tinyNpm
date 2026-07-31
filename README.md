@@ -57,7 +57,7 @@ This extension contributes the following setting:
 
 ## Known Issues
 
-None currently tracked. If you run into a bug, please [open an issue](https://github.com/about14sheep/tinyNpm/issues).
+See the issues tab for bugs. If you run into a bug, please [open an issue](https://github.com/about14sheep/tinyNpm/issues).
 
 ## Release Notes
 
