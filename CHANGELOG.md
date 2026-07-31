@@ -35,3 +35,7 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 - Improvemts to the hover menu ui to make it more fluid and less like a wall of text.
 - Various performance improvements
 - We now publish to open-vsx as well as the vs code extension store!
+
+## [0.2.2] - Better error handling
+
+- Gracefully handle errors and log to output channel
