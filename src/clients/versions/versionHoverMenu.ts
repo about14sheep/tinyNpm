@@ -31,8 +31,10 @@ export function createVersionsHoverMenu() {
                             const latestUpdateButton = createUpdateButton(decoration.packageName, decoration.latest.version, position.line, line);
                             const bufferedUpdateButton = createUpdateButton(decoration.packageName, decoration.safest.version, position.line, line);
                             markdown.appendMarkdown('---\n\n');
-                            markdown.appendMarkdown(`[Update to buffered](${bufferedUpdateButton} "Version ${decoration.safest.version} ${getTimeAgo(decoration.safest.release)}") &nbsp; &nbsp; &nbsp;`);
-                            markdown.appendMarkdown(`[Update to latest](${latestUpdateButton} "Version ${decoration.latest.version} ${getTimeAgo(decoration.latest.release)}") &nbsp; &nbsp; &nbsp;`);
+                            if (decoration.latest.version !== decoration.safest.version) {
+                                markdown.appendMarkdown(`[Update to v${decoration.safest.version}](${bufferedUpdateButton} "Buffered version ${getTimeAgo(decoration.safest.release)}") &nbsp; &nbsp; &nbsp;`);
+                            }
+                            markdown.appendMarkdown(`[Update to v${decoration.latest.version}](${latestUpdateButton} "Latest version ${getTimeAgo(decoration.latest.release)}") &nbsp; &nbsp; &nbsp;`);
                             markdown.appendMarkdown(`${createOpenSettingsButton(bufferPeriod)}`);
 
                             return new Hover(markdown, decoration.range);

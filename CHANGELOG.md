@@ -45,3 +45,9 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 - Fixed a bug where if one package failed to destruct metadata it would crash the extension.
 - More error logging/robust handling
 - More edge case fixes
+
+## [0.2.4] - Update version buttons
+
+- Changes the "Update to buffered" and "Update to latest" buttons to "Update to [versuin]"
+- When hovering over the version numbers the popup will say if its buffered/latest and publish date
+- If buffered and latest versions are same, only one button shows up wtih "latest version published x [time] ago"
