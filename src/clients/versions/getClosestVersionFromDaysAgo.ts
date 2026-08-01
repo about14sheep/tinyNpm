@@ -1,14 +1,4 @@
 import { getValidVersions } from "./getValidVersions";
-import { compare } from "semver";
-
-function sorter(a: [string, string], b: [string, string]) {
-    const versionCompare = compare(a[0], b[0]);
-    if (versionCompare !== 0) {
-        return versionCompare;
-    }
-
-    return new Date(a[1]).getTime() - new Date(b[1]).getTime();
-}
 
 export function getClosestVersionFromDaysAgo(versions: Record<string, string>, safeAge = 3) {
     const validVersions = getValidVersions(versions);
