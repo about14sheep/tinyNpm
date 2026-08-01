@@ -51,3 +51,8 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 - Changes the "Update to buffered" and "Update to latest" buttons to "Update to [versuin]"
 - When hovering over the version numbers the popup will say if its buffered/latest and publish date
 - If buffered and latest versions are same, only one button shows up wtih "latest version published x [time] ago"
+
+## [0.2.5] - Way more cool icon
+
+- Now we have a proper icon/logo
+- New demo to showcase v0.2.4 improvements

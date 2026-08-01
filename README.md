@@ -5,7 +5,7 @@ tinyNpm helps prevent your application from being impacted by supply chain attac
 
 It does this and so much more!
 
-![tinyNpm hover demo](images/demo.gif)
+![tinyNpm hover demo](images/demosm.gif)
 
 ## Features
 
