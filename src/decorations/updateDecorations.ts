@@ -27,8 +27,13 @@ export async function updateDecorations(
 
   try {
     const pacakgeJson = JSON.parse(text);
+    const allDeps = {
+      ...pacakgeJson.dependencies,
+      ...pacakgeJson.devDependencies,
+    };
+    await fetchPackages(Object.keys(allDeps), workspaceRoot);
+
     if (pacakgeJson.dependencies) {
-      await fetchPackages(Object.keys(pacakgeJson.dependencies), workspaceRoot);
       processDependencies(
         document,
         text,
@@ -37,10 +42,6 @@ export async function updateDecorations(
       );
     }
     if (pacakgeJson.devDependencies) {
-      await fetchPackages(
-        Object.keys(pacakgeJson.devDependencies),
-        workspaceRoot,
-      );
       processDependencies(
         document,
         text,

@@ -56,3 +56,9 @@ This project adheres to [Keep a Changelog](http://keepachangelog.com/) conventio
 
 - Now we have a proper icon/logo
 - New demo to showcase v0.2.4 improvements
+
+## [0.2.6] - Performance improvements
+
+- Only add decoration ranges if we are going to show it
+- Only grab the config once instead of for every dependency
+- Remove unneeded sort from getClosestVersionFromDaysAgo

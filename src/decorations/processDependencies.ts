@@ -7,11 +7,14 @@ import { outputChannel } from "../extension";
 import { getErrorMessage } from "../clients/util/getErrorMessage";
 
 function getNumberOfDependencies(metadata: any, version: string): number {
-  if (metadata.versions && metadata.versions[version] && metadata.versions[version].dependencies) {
+  if (
+    metadata.versions &&
+    metadata.versions[version] &&
+    metadata.versions[version].dependencies
+  ) {
     return Object.keys(metadata.versions[version].dependencies).length;
   }
 
-  outputChannel.appendLine(`No dependencies found for version ${version} in metadata. This is probably an error.`);
   return 0;
 }
 
@@ -21,6 +24,8 @@ export function processDependencies(
   deps: Record<string, string>,
   decorations: DecorationOptions[],
 ) {
+  const config = workspace.getConfiguration("tinynpm");
+
   for (const [packageName, version] of Object.entries(deps)) {
     try {
       const cleanVersion = version.replace(/^[\^~]/, "");
@@ -34,9 +39,6 @@ export function processDependencies(
         const verPos = document.positionAt(match.index + match[0].length);
         const pos = document.lineAt(verPos.line).range.end;
         const metadata = getRepoFromMemory(packageName);
-        const numberOfDependencies = getNumberOfDependencies(metadata, cleanVersion);
-        const downloadCount = getDownloadsFromMemory(packageName) || -1;
-        const config = workspace.getConfiguration("tinynpm");
         const bufferPeriod = config.get<number>("versionBufferPeriod", 3);
         const safeVersion = getClosestVersionFromDaysAgo(
           metadata.time,
@@ -53,6 +55,11 @@ export function processDependencies(
           currentDate >= new Date(latestVersionRelease);
 
         if (!hideDeco) {
+          const numberOfDependencies = getNumberOfDependencies(
+            metadata,
+            cleanVersion,
+          );
+          const downloadCount = getDownloadsFromMemory(packageName) || -1;
           decorations.push({
             range,
             renderOptions: {
@@ -62,24 +69,24 @@ export function processDependencies(
               },
             },
           });
-        }
 
-        decorationRanges.set(match.index, {
-          range,
-          packageName,
-          depCount: numberOfDependencies,
-          downloads: downloadCount,
-          currentVersion: cleanVersion,
-          age: currentVersionRelease,
-          latest: {
-            version: latestVersion,
-            release: latestVersionRelease,
-          },
-          safest: {
-            version: safeVersion[0],
-            release: safeVersion[1],
-          },
-        });
+          decorationRanges.set(match.index, {
+            range,
+            packageName,
+            depCount: numberOfDependencies,
+            downloads: downloadCount,
+            currentVersion: cleanVersion,
+            age: currentVersionRelease,
+            latest: {
+              version: latestVersion,
+              release: latestVersionRelease,
+            },
+            safest: {
+              version: safeVersion[0],
+              release: safeVersion[1],
+            },
+          });
+        }
       }
     } catch (error: unknown) {
       outputChannel.appendLine(
